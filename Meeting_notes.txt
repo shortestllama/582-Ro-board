@@ -1,0 +1,31 @@
+Capstone Ideas:
+Chess AI - teach Neo robots
+Monopoly for robots!
+Desktop for AR Goggles
+Android app that checks other apps (Windows defender for android devices)
+Task scheduler - AR
+Embedded microcontroller - MQTT
+Gambling related
+-Neo robots teach them to play Poker/blackjack/roullete
+-robot was the dealer - for Blackjack dealer and player
+Ours is a Nao 5
+
+
+1. Figure out general robot stuff. Writing an app, installing, testing.
+2. Figure out general game stuff. What game, how robot interacts with it.
+3. Develop app to play game with robot.
+4. Improve app and robot interaction with people.
+5. Testing/debugging.
+Do we do our app inside the choreography app?
+
+
+Small enough that the robot can reach it with just its arm
+Game pieces are able to be picked up with just 3 points of contact
+Generally simple game.
+Need to measure its range of movement
+Only a few locations of the arm.
+Cards or pieces
+What is the range of movement on arm? How far can it reach.
+Angles of picking up?
+Analyze hand shape. Can it pick up squares, rectangles, etc.
+Texas hold em, checkers, Connect 4, Tic-tac-toe.
