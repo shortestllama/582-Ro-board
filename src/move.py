@@ -1,5 +1,5 @@
 #Prologue Comments
-#Code Artifact: LHand.py
+#Code Artifact: move.py
 #Code Purpose:
 # Team 19
 #Created: 
