@@ -1,3 +1,15 @@
+#Prologue Comments
+#Code Artifact: arm.py
+#Code Purpose:
+# Team 19
+#Created: 
+#Revised:
+#Preconditions:
+#Postconditions: 
+#Errors:
+#Side Effects:
+#Invariants:
+#Faults:
 import time
 import almath
 import argparse
