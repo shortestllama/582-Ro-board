@@ -1,3 +1,15 @@
+#Prologue Comments
+#Code Artifact: LHand.py
+#Code Purpose:
+# Team 19
+#Created: 
+#Revised:
+#Preconditions:
+#Postconditions: 
+#Errors:
+#Side Effects:
+#Invariants:
+#Faults:
 class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
