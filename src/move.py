@@ -2,7 +2,7 @@
 #Code Artifact: move.py
 #Code Purpose: choose which column to place the next piece
 # Team 19
-#Created: 
+#Created: 2/25/25
 #Revised: 3/12/25
 #Preconditions: Ro-board is set up to have taken a picture from the board
 #Postconditions: Ro-board knows what column to place next piece in
