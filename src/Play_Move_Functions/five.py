@@ -1,15 +1,15 @@
 #Prologue Comments
 #Code Artifact: five.py
-#Code Purpose:
+#Code Purpose: Puts the game piece in column 0.
 # Team 19
-#Created: 
-#Revised:
-#Preconditions:
-#Postconditions: 
-#Errors:
-#Side Effects:
-#Invariants:
-#Faults:
+#Created: 3/8/25
+#Revised: 3/13/25
+#Preconditions: Robot is in correct position in relation to the game board
+#Postconditions: Robot dropped piece in column five.
+#Errors: Robot could lose power and cause an issue with connecting to joints.
+#Side Effects: None
+#Invariants: None
+#Faults: May drop the piece too early or miss the board
 class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
