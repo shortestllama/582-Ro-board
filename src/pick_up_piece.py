@@ -1,8 +1,20 @@
+#Prologue Comments
+#Code Artifact: pick_up_piece.py
+#Code Purpose: Code for the robot to pick up the piece.
+# Team 19
+#Created: 4/08/25
+#Revised: 4/08/25
+#Preconditions: Piece is within the piece holder and a game has been initiated.
+#Postconditions: Ro-board has picked up the piece, holding in hand correctly, and ready to place piece next.
+#Errors: May have a bad grab if the piece is not properly socketed within the piece holder.
+#Side Effects: None
+#Invariants: None
+#Faults: Dropping the piece is possible if there are outside objects hitting the hands.
 import almath
 
 class MyClass(GeneratedClass):
     def __init__(self):
-        GeneratedClass.__init__(self)
+        GeneratedClass.__init__(self) #pick up piece generated class
 
     def onLoad(self):
         self.motion = ALProxy("ALMotion")
