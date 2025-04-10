@@ -21,7 +21,7 @@ YELLOW = '2' #other color for play markers
 
 # These are currently some hard-coded values but eventually they would
 # be pulled from the image taken from the robot and the chosen difficulty
-FILE = "file.jpg"
+FILE = "received_image.jpg"
 DIFFICULTY = 'hard'
 
 def determine_move(board, difficulty):
@@ -50,16 +50,16 @@ def determine_move(board, difficulty):
 image = cv2.imread(FILE) #read image from file
 
 # Define confidence threshold
-config = InferenceConfiguration(confidence_threshold=0.2)
+config = InferenceConfiguration(confidence_threshold=0.5)
 
 
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
-    api_key="API_KEY"
+    api_key="qhTLMqBcrKlEz4riDUpI" #REMOVE, replace with API key when used in production.
 ) #define requirements for connecting with API, website and key
 
 CLIENT.configure(config) #configure connection
-result = CLIENT.infer(image, model_id="connect4-ampe5/2") #get result from API
+result = CLIENT.infer(image, model_id="connect4-ampe5/3") #get result from API
 
 detections = sv.Detections.from_inference(result) #get inference from the API
 detections = detections[detections.class_id != 0] #filter out bad results

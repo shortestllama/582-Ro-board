@@ -16,6 +16,7 @@ import socketserver #Used for server
 import APIs #import from my APIs file
 import cgi #used to parse multipart image files.
 from PIL import Image #used to create Image files
+import cv2
 
 PORT = 8000 #default port to serve on.
 
@@ -39,13 +40,14 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
                 # Save the uploaded image to a file
                 with open("received_image.jpg", "wb") as f: #overwrite if needed
                     f.write(file_item.file.read()) #write to file system as bytes.
-                image = Image.open("received_image.jpg") #open as an Image file.
-                column = APIs.send_Information( image, difficulty ) #call function to get which column
+                image = cv2.imread("received_image.jpg") #open as an Image file.
+                game_state, column = APIs.send_Information( image, difficulty ) #call function to get which column
                 # Send a success response
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json") #as a json.
                 self.end_headers() #let Ro-Board know I am done with headers.
-                response = f'{{"message": "Received", "column": {column}}}' #create response, includes column and success on message.
+                response = f'{{"message": "Received", "game_state": {game_state}, "column": {column}}}' #create response, includes column and success on message.
+                print(response)
                 self.wfile.write(response.encode("utf-8")) #send response
             else:
                 # No file uploaded

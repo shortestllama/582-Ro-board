@@ -134,6 +134,7 @@ class Board:
             - 0 if no win present
             - 1 if red has won
             - 2 is yellow has won
+            - 3 if board full and no win
     """
     def win_exists(self) -> int:
         if self.board == None: # Check if the board is not set
@@ -173,5 +174,15 @@ class Board:
             if (connected >= 4): # Report winner if 4 of more connected pieces
                 return int(self.board[i])
 
-        # No 4 consecutive pieces on the board, so report no win
-        return 0
+
+        # No 4 consecutive pieces on the board, so check for tie
+        if '0' not in self.board:
+            return 3    
+        return 0 # Just returrn no win
+
+    def make_move(self, column):
+        # Loop backwards through column until an empty space is shown
+        for i in range(0, 6, -1):
+            if self[i*7 + column] == 0:
+                self[i*7 + column] = '2'
+                break

@@ -15,48 +15,76 @@ import supervision as sv #Used for RoboFlow
 import requests #used for connections
 import http.server #sets up HTTP server
 from PIL import Image #creates image file to send to Connect4 API
+from board import Board
+import numpy as np
 
 RED = '1' #classifications for play markers
 YELLOW = '2' #other color for play markers
 
-def determine_move(board, difficulty):
-    # Make HTTP request to API with board and let robot be yellow
-    # TODO: Check for win and return magic value if game end
-    # url_won = "https://kevinalbs.com/connect4/back-end/index.php/getMoves?board_data=" + board + "&player=" + YELLOW
+def determine_move(board, difficulty) -> (int, int):
+    # Check for a win
+    board = board[len(board)-42:] # Trim board down to 42 pieces to correct hallucinations
+    while len(board) < 42:
+        board = '0' + board
+    print(len(board))
+    b = Board(board)
+    game_state = b.win_exists()
 
-    url_move = "https://kevinalbs.com/connect4/back-end/index.php/getMoves?board_data=" + board + "&player=" + YELLOW #URL for API
+    if game_state != 0: # Game done
+        return game_state, -1
+    print(board)
+    print(len(board))
+    url_move = "https://kevinalbs.com/connect4/back-end/index.php/getMoves?board_data=" + board + "&player=" + RED #URL for API
     response_move = requests.get(url_move).json() #send request and receive response
+    print(response_move)
+    vals = [0]*7
+    curr_col = 0
+    while curr_col < 7:
+        if str(curr_col) in response_move:
+            vals[curr_col] = response_move[str(curr_col)]
+        else:
+            vals[curr_col] = -9999
+        curr_col += 1
 
-    vals = [int(response_move[i]) for i in '0123456'] #parse response
+    print(vals)
     if difficulty == "1": #if gameplay is on easy, get the smallest column response
+        print("easy")
         t = min(vals) #min value is worst
     elif difficulty == "2": #get medium response, which is medium correct column to choose.
+        print("medium")
         t = sorted( list( set( vals ) ), reverse=True )[1] #Second greatest is the second best, hence medium difficulty
         #sorting it gets the greatest value, and the one next to it is the second greatest.
     else: # difficulty == 'hard': #get the greatest column response
+        print("hard")
         t = max(vals) #max value is best
 
-    for i in '0123456': #check each colomn number
-        if int(response_move[i]) == t: #check if equal to my column from difficulty choice
-            return i #return which column
+    for i in range(len(vals)): #check each colomn number
+        if int(vals[i]) == t: #check if equal to my column from difficulty choice
+            print(t)
+            b.make_move(i)
+            game_state = b.win_exists()
+            print(b.board)
 
-    return -1 #error, did not find t
+            return game_state, i #return which column
+
+    return -2, -2 #error, did not find t
+
 def send_Information( file, difficulty ):
     # Define confidence threshold
-    config = InferenceConfiguration(confidence_threshold=0.2)
+    config = InferenceConfiguration(confidence_threshold=0.7)
     CLIENT = InferenceHTTPClient(
         api_url="https://detect.roboflow.com",
         api_key="TEMP" #REMOVE, replace with API key when used in production.
     ) #define requirements for connecting with API, website and key
-
     CLIENT.configure(config) #configure connection
-    result = CLIENT.infer( file, model_id="connect4-ampe5/2") #get result from API
+    result = CLIENT.infer( file, model_id="connect4-ampe5/3") #get result from API
 
     detections = sv.Detections.from_inference(result) #get inference from the API
     detections = detections[detections.class_id != 0] #filter out bad results
 
     pieces = [p for p in result['predictions'] if p['class'] in ['red','yellow','empty']] #sort pieces from result and current picture
-    sorted_pieces = sorted(pieces, key=lambda d: d['y'], reverse=False) #sort pieces by color
+    sorted_pieces = sorted(pieces, key=lambda d: d['y'] + d['height'] / 2, reverse=False) #sort pieces by color
+    print(sorted_pieces)
     grouped_data = [sorted_pieces[i:i + 7] for i in range(0, len(sorted_pieces), 7)] #group them then by class.
 
     fully_sorted = [] #init sorted array
@@ -74,6 +102,8 @@ def send_Information( file, difficulty ):
                 board += YELLOW #add enum YELLOW to board
             else: # piece == 'empty':
                 board += '0' #add enum empty to board
+
+    print(board)
 
     move = determine_move( board, difficulty ) #call determine move function with my correct board and given difficulty
     return move #return what column to place game piece in.
