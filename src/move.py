@@ -1,6 +1,6 @@
 #Prologue Comments
 #Code Artifact: move.py
-#Code Purpose: choose which column to place the next piece
+#Code Purpose: choose which column to place the next piece.  This is ran on the computer as a proxy-server since the Ro-Board cannot get the packages used.
 # Team 19
 #Created: 2/25/25
 #Revised: 3/12/25
