@@ -1,6 +1,6 @@
 #Prologue Comments
 #Code Artifact: move.py
-#Code Purpose: choose which column to place the next piece.  This is ran on the computer as a proxy-server since the Ro-Board cannot get the packages used.
+#Code Purpose: choose which column to place the next piece.  This code is defunct and has been moved to APIs.py
 # Team 19
 #Created: 2/25/25
 #Revised: 3/12/25
@@ -55,7 +55,7 @@ config = InferenceConfiguration(confidence_threshold=0.5)
 
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
-    api_key="qhTLMqBcrKlEz4riDUpI" #REMOVE, replace with API key when used in production.
+    api_key="temp" #REMOVE, replace with API key when used in production.
 ) #define requirements for connecting with API, website and key
 
 CLIENT.configure(config) #configure connection
