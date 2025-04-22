@@ -22,14 +22,13 @@ YELLOW = '2' #other color for play markers
 
 def determine_move(board, difficulty) -> (int, int):
     # Check for a win
-    b = Board(board) # Create new board object
     board.print() # Print board for debugging
-    game_state = b.win_exists() # Use board to check for win
+    game_state = board.win_exists() # Use board to check for win
 
     if game_state != 0: # Game done
         return game_state, -1 # Return game end and no column to play (-1)
 
-    url_move = "https://kevinalbs.com/connect4/back-end/index.php/getMoves?board_data=" + board + "&player=" + RED #URL for API
+    url_move = "https://kevinalbs.com/connect4/back-end/index.php/getMoves?board_data=" + board.board + "&player=" + RED #URL for API
     response_move = requests.get(url_move).json() #send request and receive response
     print(response_move) # Print response for debugging
     vals = [0]*7 # Create empty list for vals
@@ -56,8 +55,8 @@ def determine_move(board, difficulty) -> (int, int):
     for i in range(len(vals)): #check each colomn number
         if int(vals[i]) == t: #check if equal to my column from difficulty choice
             print(t) # Print the column for debugging
-            b.make_move(i) # Use the board object to make a move
-            game_state = b.win_exists() # Check if win exists within the board
+            board.make_move(i) # Use the board object to make a move
+            game_state = board.win_exists() # Check if win exists within the board
             board.print() # Print the board for debugging 
 
             return game_state, i #return which column
@@ -69,7 +68,7 @@ def send_Information( file, difficulty ):
     config = InferenceConfiguration(confidence_threshold=0.7)
     CLIENT = InferenceHTTPClient(
         api_url="https://detect.roboflow.com",
-        api_key="TEMP" #REMOVE, replace with API key when used in production.
+        api_key="qhTLMqBcrKlEz4riDUpI" #REMOVE, replace with API key when used in production.
     ) #define requirements for connecting with API, website and key
     CLIENT.configure(config) #configure connection
     result = CLIENT.infer( file, model_id="connect4-ampe5/3") #get result from API
@@ -78,6 +77,8 @@ def send_Information( file, difficulty ):
     detections = detections[detections.class_id != 0] #filter out bad results
 
     pieces = [p for p in result['predictions'] if p['class'] in ['red','yellow','empty']] #sort pieces from result and current picture
+    print(f"len {len(pieces)}")
+    print(f"pieces {pieces}")
     board = Board(pieces) # Construct board object from pieces
     board.print() # DEBUG - print board
 

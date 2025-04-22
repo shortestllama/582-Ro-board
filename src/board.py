@@ -14,7 +14,7 @@ Side Effects: None
 Invariants: None
 Faults: None
 """
-NEW_ROW_BOUND = 20 # Jumps to rows are indicated by a difference of 20 or more in the y-value
+NEW_ROW_BOUND = 12 # Jumps to rows are indicated by a difference of 10 or more in the y-value
 NEXT_COL_BOUND = 40 # Jumps to columns are indicated by a difference of 100 or more in the x-value
 RED = '1'
 YELLOW = '2'
@@ -57,12 +57,12 @@ class Board:
 
         # Construct board from the pieces from the model with updated values
         sorted_pieces = sorted(updated_pieces, key=lambda p: p['y'], reverse=False) #sort pieces by y value
-
+        # print(f"sorted pieces {sorted_pieces}")
         grouped_data = [] # Stores all pieces sorted by row
         prev_y = 0 # Keeps track of the previous y value
         curr_row = [] # Keeps track of current row
         for piece in sorted_pieces: # Loop through all the pieces
-            if prev_y == 0 or (abs(prev_y - piece['y']) < NEW_ROW_BOUND): # Add to the row if difference of y is small
+            if len(curr_row) < 7 and (prev_y == 0 or (abs(prev_y - piece['y']) < NEW_ROW_BOUND)): # Add to the row if difference of y is small
                 curr_row.append(piece) # Add piece to current row
             else:
                 grouped_data.append(curr_row) # Add row to grouped
@@ -71,7 +71,7 @@ class Board:
             prev_y = piece['y'] # Update previous y
 
         grouped_data.append(curr_row) # Add last row to board
-
+        # print(f"grouped data: {grouped_data}")
 
         fully_sorted = [] #init sorted array
         for group in grouped_data: #now put groups in sorted array
@@ -93,6 +93,8 @@ class Board:
                     board += '0' #add enum empty to board
 
         # Add pieces that are not detected
+        print(board)
+        print(len(board))
         full_board = self._fill_pieces(no_duplicates, board)
 
         return full_board
@@ -113,13 +115,14 @@ class Board:
                     num_yellows += 1 # Add one to number of yellows 
 
         xs_arr = np.array(xs).reshape(-1, 1) # Convert to 2D array
-        col_means = KMeans(n_clusters = 7, random_state=0).fit(xs_arr) # Find means of column x values
+        col_means = KMeans(n_clusters=7, random_state=0).fit(xs_arr) # Find means of column x values
         col_sorted = sorted(col_means.cluster_centers_.flatten())
         # print("Column centers: ", col_sorted)
 
         # Find missing pieces and add 0's in their place
         missing_pieces = [] # Keeps track of the pieces that are missing (their index in board)
         for i, row in enumerate(pieces):
+            print(f"{i}: {len(row)}")
             if len(row) < 7: # Only look at rows well fewer than 7 pieces
                 assignments = [None] * 7  # 7 columns
                 for piece in row: # Loop through row of xs
@@ -153,6 +156,7 @@ class Board:
                         missing_pieces.append((7*i)+j)  
         
         missing_pieces = sorted(missing_pieces, reverse=True) # Reverse the missing pieces 
+        print(missing_pieces)
         board_list = list(board)
         for piece in missing_pieces: # Loop through missing pieces
             if num_yellows <= num_reds: # Equal number of each color or less yellows 
@@ -333,7 +337,7 @@ class Board:
     def make_move(self, column):
         # Loop backwards through column until an empty space is shown
         for i in range(0, 6, -1):
-            if self[i*7 + column] == 0:
-                self[i*7 + column] = '2'
+            if self.board[i*7 + column] == 0:
+                self.board[i*7 + column] = RED
                 break
     
