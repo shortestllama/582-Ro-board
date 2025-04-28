@@ -1,3 +1,15 @@
+#Prologue Comments
+#Code Artifact: trash_talk.py
+#Code Purpose: Adds functionality for ro-board gestures during the gameplay loop.
+# Team 19
+#Created: 4/27/25
+#Revised: 4/27/25
+#Preconditions: Ro-board is playing a game with the user.
+#Postconditions: Ro-board has intereracted with the user throughout the game.
+#Errors: None
+#Side Effects: None
+#Invariants: None
+#Faults: None
 import random
 
 class MyClass(GeneratedClass):
