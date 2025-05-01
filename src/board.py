@@ -158,18 +158,32 @@ class Board:
         missing_pieces = sorted(missing_pieces, reverse=True) # Reverse the missing pieces 
         print(missing_pieces)
         board_list = list(board)
+        current_num_missing = len(missing_pieces)
         for piece in missing_pieces: # Loop through missing pieces
+            print("gay")
             if num_yellows <= num_reds: # Equal number of each color or less yellows 
-                if piece <= 34 and board_list[piece + 7] != '0': # If piece below is not empty
+                print("?")
+                if piece <= 34 - current_num_missing and board_list[piece + 7] != '0': # If piece below is not empty
+                    print("trying")
                     board_list.insert(piece, YELLOW) # Yellow is missing and might go here
                     num_yellows += 1 # Add 1 to num of yellow
+                    current_num_missing -= 1
+                else:
+                    board_list.insert(piece, '0') # Piece is most likely empty
+                    current_num_missing -= 1
+
             elif num_yellows > num_reds + 1: # Too many yellows compared to reds
-                if piece <= 34 and board_list[piece + 7] != '0': # If piece below is not empty
+                if piece <= 34 - current_num_missing and board_list[piece + 7] != '0': # If piece below is not empty
                     board_list.insert(piece, RED) # Red is missing and might go here
                     num_reds += 1 # Add 1 to num of reds
+                    current_num_missing -= 1
+                else:
+                    board_list.insert(piece, '0') # Piece is most likely empty
+                    current_num_missing -= 1
             else:
                 board_list.insert(piece, '0') # Piece is most likely empty
-    
+                current_num_missing -= 1
+        print(len(board_list))
         board_list = "".join(board_list)
         return board_list 
 
