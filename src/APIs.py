@@ -52,7 +52,7 @@ def determine_move(board, difficulty) -> (int, int):
         print("hard")
         t = max(vals) #max value is best
 
-    for i in range(len(vals)): #check each colomn number
+    for i in range(len(vals)): #check each column number
         if int(vals[i]) == t: #check if equal to my column from difficulty choice
             print(t) # Print the column for debugging
             board.make_move(i) # Use the board object to make a move

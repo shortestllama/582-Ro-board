@@ -350,8 +350,14 @@ class Board:
 
     def make_move(self, column):
         # Loop backwards through column until an empty space is shown
-        for i in range(0, 6, -1):
-            if self.board[i*7 + column] == 0:
-                self.board[i*7 + column] = RED
+        board_list = list(self.board)
+        for i in range(5, -1, -1):
+            print(i)
+            print(i*7 + column)
+            if board_list[i*7 + column] == '0':
+                print(":)")
+                board_list[i*7 + column] = RED
+                self.board = "".join(board_list)
                 break
+            
     
